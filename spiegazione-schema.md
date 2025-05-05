@@ -19,3 +19,4 @@
 **molti a molti**: ogni studente può iscriversi a vari appelli e ogni per ogni appello possono esserci più studenti presenti.
 In questa tabella ponte ho deciso di inserire anche la votazione che l alunno ottiene.  
 ---
+![](img/schema.png)
