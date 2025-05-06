@@ -107,7 +107,25 @@ WHERE
 ``` 
 ### 6. Selezionare tutti i corsi di laurea magistrale (38)
 **soluzione**:  
+ ```
+SELECT 
+    *  
+
+FROM
+    dbuniversity.degrees  
+
+WHERE `level` = 'magistrale';
+``` 
 **controllo soluzione**: 
+ ```
+SELECT 
+    COUNT(id)  
+
+FROM
+    dbuniversity.degrees  
+
+WHERE `level` = 'magistrale';
+``` 
 ### 7. Da quanti dipartimenti è composta l'università? (12)
 **soluzione**:  
 **controllo soluzione**: 
