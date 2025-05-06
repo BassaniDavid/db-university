@@ -62,25 +62,49 @@ WHERE
 **soluzione**: 
  ```
 SELECT 
-    *
+    *  
+
 FROM
-    dbuniversity.courses
+    dbuniversity.courses  
+
 WHERE
     `year` = '1' AND `period` = 'I semestre';
 ```
 **controllo soluzione**: 
  ```
 SELECT 
-    COUNT(id)
+    COUNT(id)  
+
 FROM
-    dbuniversity.courses
+    dbuniversity.courses  
+
 WHERE
     `year` = '1' AND `period` = 'I semestre';
 ```
 ---
 ### 5. Selezionare tutti gli appelli d'esame che avvengono nel pomeriggio (dopo le 14) del 20/06/2020 (21)
-**soluzione**:  
+**soluzione**: 
+ ```
+SELECT 
+    *  
+
+FROM
+    dbuniversity.exams  
+
+WHERE 
+    `date` = '2020-06-20'AND `hour` > '14:00:00';
+``` 
 **controllo soluzione**: 
+ ```
+SELECT 
+    COUNT(id) 
+
+FROM
+    dbuniversity.exams  
+
+WHERE 
+    `date` = '2020-06-20'AND `hour` > '14:00:00';
+``` 
 ### 6. Selezionare tutti i corsi di laurea magistrale (38)
 **soluzione**:  
 **controllo soluzione**: 
