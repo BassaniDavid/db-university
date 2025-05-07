@@ -62,6 +62,27 @@ FROM
 WHERE 
     YEAR(date_of_birth) < '1995';
 ```
+**soluzioni migliori**:
+```
+SELECT 
+    *  
+
+FROM
+    dbuniversity.students  
+
+WHERE 
+    YEAR(CURDATE()) - YEAR(date_of_birth) > 30;
+```
+```
+SELECT 
+    *  
+
+FROM
+    dbuniversity.students  
+
+WHERE 
+    TIMESTAMPDIFF(YEAR, `date_of_birth`, CURDATE()) > 30;
+```
 ---
 
 
@@ -104,6 +125,17 @@ FROM
 
 WHERE 
     `date` = '2020-06-20'AND `hour` > '14:00:00';
+```
+**soluzione leggermente migliore**: 
+ ```
+SELECT 
+    *  
+
+FROM
+    dbuniversity.exams  
+
+WHERE 
+    `date` = '2020-06-20'AND HOUR(`hour`) >= 14;
 ``` 
 **controllo soluzione**: 
  ```
@@ -148,7 +180,7 @@ WHERE `level` = 'magistrale';
 **soluzione**:  
 ``` 
 SELECT 
-    COUNT(name)  
+    COUNT(name)  AS `numero_dipertimenti`
 
 FROM
     dbuniversity.departments;
@@ -156,16 +188,6 @@ FROM
 ---
 ### 8. Quanti sono gli insegnanti che non hanno un numero di telefono? (50)
 **soluzione**:  
-``` 
-SELECT 
-    *  
-
-FROM
-    dbuniversity.teachers  
-
-WHERE `phone` IS NULL;
-``` 
-**controllo soluzione**: 
 ``` 
 SELECT 
     COUNT(id)  
