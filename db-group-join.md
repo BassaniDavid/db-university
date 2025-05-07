@@ -121,7 +121,9 @@ INNER JOIN
 INNER JOIN
     `teachers` ON `course_teacher`.`teacher_id` = `teachers`.`id`
 WHERE
-    `departments`.`name` = 'Dipartimento di Matematica';
+    `departments`.`name` = 'Dipartimento di Matematica'
+GROUP BY `nome_docente`, `cognome_docente`
+ORDER BY `nome_docente`, `cognome_docente`;
 ```
 ### 7.BONUS:Selezionare per ogni studente il numero di tentativi sostenuti per ogni esame,stampando anche il voto massimo.Successivamente, filtrare i tentativi con voto minimo 18.
 ```
