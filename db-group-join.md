@@ -127,5 +127,18 @@ ORDER BY `nome_docente`, `cognome_docente`;
 ```
 ### 7.BONUS:Selezionare per ogni studente il numero di tentativi sostenuti per ogni esame,stampando anche il voto massimo.Successivamente, filtrare i tentativi con voto minimo 18.
 ```
-
+SELECT 
+    `exams`.`id` AS `id_esame`,
+    `students`.`id` AS `id_studente`,
+    COUNT(`students`.`id`) AS `numero_tentativi`,
+    `exam_student`.`vote` AS `voto`
+FROM
+    `students`
+INNER JOIN
+    `exam_student` ON `students`.`id` = `exam_student`.`student_id`
+INNER JOIN
+    `exams` ON `exams`.`id` = `exam_student`.`exam_id`
+WHERE `exam_student`.`vote` >= 18
+GROUP BY `id_studente` , `id_esame`
+ORDER BY `id_esame`;
 ```
