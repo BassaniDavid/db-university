@@ -1,13 +1,49 @@
 # query con GROUP BY
 
 ### 1. Contare quanti iscritti ci sono stati ogni anno
+```
+SELECT 
+    YEAR(`enrolment_date`) AS `anno_iscrizione`, COUNT(id) AS `numero_iscritti`
+FROM
+    dbuniversity.students
+GROUP BY `anno_iscrizione`
+ORDER BY `anno_iscrizione`;
+```
 ### 2. Contare gli insegnanti che hanno l'ufficio nello stesso edificio
+```
+SELECT 
+   `office_address` AS `edificio`, COUNT(id) AS `numero_docenti`
+FROM
+    dbuniversity.teachers
+GROUP BY `office_address`
+ORDER BY `office_address`;
+```
 ### 3. Calcolare la media dei voti di ogni appello d'esame
+```
+SELECT 
+   `exam_id`, AVG (`vote`) AS `media_voti`
+FROM
+    dbuniversity.exam_student
+GROUP BY `exam_id`
+ORDER BY `exam_id`;
+```
 ### 4. Contare quanti corsi di laurea ci sono per ogni dipartimento
-
+```
+SELECT 
+  `departments`.`name` , COUNT(`department_id`) AS `numero_corsi_di_laurea`
+FROM
+    `departments`
+INNER JOIN `degrees`
+ON `departments`.`id` = `degrees`.`department_id`
+GROUP BY `department_id`
+ORDER BY `departments`.`name`;
+```
 # query con JOIN
 
 ### 1.Selezionare tutti gli studenti iscritti al Corso di Laurea in Economia
+```
+
+```
 ### 2.Selezionare tutti i Corsi di Laurea Magistrale del Dipartimento di Neuroscienze
 ### 3.Selezionare tutti i corsi in cui insegna Fulvio Amato (id=44)
 ### 4.Selezionare tutti gli studenti con i dati relativi al corso di laurea a cui sono iscritti e il relativo dipartimento,in ordine alfabetico per cognome e nome
