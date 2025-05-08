@@ -40,7 +40,7 @@ ORDER BY `departments`.`name`;
 ```
 # query con JOIN
 
-### 1.Selezionare tutti gli studenti iscritti al Corso di Laurea in Economia
+### 1. Selezionare tutti gli studenti iscritti al Corso di Laurea in Economia
 ```
 SELECT 
    `degrees`.`name` ,`students`.*
@@ -50,7 +50,7 @@ INNER JOIN `students`
 ON `degrees`.`id` = `students`.`degree_id`
 WHERE `degrees`.`name` ='Corso di Laurea in Economia';
 ```
-### 2.Selezionare tutti i Corsi di Laurea Magistrale del Dipartimento di Neuroscienze
+### 2. Selezionare tutti i Corsi di Laurea Magistrale del Dipartimento di Neuroscienze
 ```
 SELECT 
     `departments`.`name` AS `nome_dipartimento`, `degrees`.*
@@ -59,9 +59,10 @@ FROM
 INNER JOIN
     `degrees` ON `departments`.`id` = `degrees`.`department_id`
 WHERE
-    `departments`.`name` = 'dipartimento di neuroscienze';
+    `departments`.`name` = 'dipartimento di neuroscienze'
+AND `degrees`.`level` = 'magistrale';
 ```
-### 3.Selezionare tutti i corsi in cui insegna Fulvio Amato (id=44)
+### 3. Selezionare tutti i corsi in cui insegna Fulvio Amato (id=44)
 ```
 SELECT 
     `teachers`.`name`, `teachers`.`surname`, `courses`.*
@@ -75,7 +76,12 @@ WHERE
     `teachers`.`name` = 'Fulvio'
 AND `teachers`.`surname` = 'amato';
 ```
-### 4.Selezionare tutti gli studenti con i dati relativi al corso di laurea a cui sono iscritti e il relativo dipartimento,in ordine alfabetico per cognome e nome
+oppure
+```
+WHERE
+    `teachers`.`id` = 44
+```
+### 4. Selezionare tutti gli studenti con i dati relativi al corso di laurea a cui sono iscritti e il relativo dipartimento,in ordine alfabetico per cognome e nome
 ```
 SELECT 
     `students`.`surname`,
@@ -90,13 +96,13 @@ INNER JOIN
     `departments` ON `departments`.`id` = `degrees`.`department_id`
 ORDER BY `students`.`surname` , `students`.`name`;
 ```
-### 5.Selezionare tutti i corsi di laurea con i relativi corsi e insegnanti
+### 5. Selezionare tutti i corsi di laurea con i relativi corsi e insegnanti
 ```
 SELECT 
     *
 FROM
     `degrees`
-    INNER JOIN
+INNER JOIN
     `courses` ON `degrees`.`id` = `courses`.`degree_id`
 INNER JOIN
     `course_teacher` ON `courses`.`id` = `course_teacher`.`course_id`
@@ -104,7 +110,7 @@ INNER JOIN
     `teachers` ON `course_teacher`.`teacher_id` = `teachers`.`id`
 ORDER BY `degrees`.`name`;
 ```
-### 6.Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica(54)
+### 6. Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica(54)
 ```
 SELECT 
     `departments`.`name` AS `nome_dipartimento`,
@@ -125,7 +131,31 @@ WHERE
 GROUP BY `nome_docente`, `cognome_docente`
 ORDER BY `nome_docente`, `cognome_docente`;
 ```
-### 7.BONUS:Selezionare per ogni studente il numero di tentativi sostenuti per ogni esame,stampando anche il voto massimo.Successivamente, filtrare i tentativi con voto minimo 18.
+
+oppure meglio con DISTRICT (serve per togliere duplicati)
+
+```
+SELECT DISTINCT
+    `departments`.`name` AS `nome_dipartimento`,
+    `teachers`.`name` AS `nome_docente`,
+    `teachers`.`surname` AS `cognome_docente`
+FROM
+    `departments`
+INNER JOIN
+    `degrees` ON `degrees`.`department_id` = `departments`.`id`
+INNER JOIN
+    `courses` ON `degrees`.`id` = `courses`.`degree_id`
+INNER JOIN
+    `course_teacher` ON `courses`.`id` = `course_teacher`.`course_id`
+INNER JOIN
+    `teachers` ON `course_teacher`.`teacher_id` = `teachers`.`id`
+WHERE
+    `departments`.`name` = 'Dipartimento di Matematica'
+ORDER BY `nome_docente`, `cognome_docente`;
+```
+### 7. BONUS: Selezionare per ogni studente il numero di tentativi sostenuti per ogni esame,stampando anche il voto massimo.Successivamente, filtrare i tentativi con voto minimo 18.
+
+tentativo
 ```
 SELECT 
     `exams`.`id` AS `id_esame`,
@@ -141,4 +171,24 @@ INNER JOIN
 WHERE `exam_student`.`vote` >= 18
 GROUP BY `id_studente` , `id_esame`
 ORDER BY `id_esame`;
+```
+
+**versione corretta**
+
+```
+SELECT 
+    COUNT(`exam_student`.`vote`) AS `numero_tentativi`,
+    `students`.`name`,
+    `students`.`surname`,
+    `exams`.`course_id`,
+    MAX(`exam_student`.`vote`) AS `voto_massimo`
+FROM 
+    `students`
+INNER JOIN
+    `exam_student` ON `students`.`id` = `exam_student`.`student_id`
+INNER JOIN
+    `exams` ON `exams`.`id` = `exam_student`.`exam_id`
+
+GROUP BY `students`.`id`,  `exams`.`course_id`
+HAVING `voto_massimo` >= 18
 ```
